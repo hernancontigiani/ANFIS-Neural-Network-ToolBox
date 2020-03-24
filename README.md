@@ -19,4 +19,4 @@ And have a report about how the model performance and the training progress
 
 Feel free to contact me by mail _hernan4790@gmail.com_ for any doubt or for the executable program for windows (50Mbytes size).
 
-Enjoy :smile!!
+Enjoy :smile !!
