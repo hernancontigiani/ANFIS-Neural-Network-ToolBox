@@ -1,7 +1,7 @@
 # ANFIS-Neural-Network-ToolBox
 C++ ANFIS  class for multipurpose project
 
-This project was released in 2013, the goal was to develop a ANFIS Neural Network in C++ and then make a tool to train and create neural networks models.
+This project was released in 2015, the goal was to develop a ANFIS Neural Network in C++ and then make a tool to train and create neural networks models.
 
 In this repository you will find de ANFIS c++ class to implement in your project.
 
