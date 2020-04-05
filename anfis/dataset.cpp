@@ -156,8 +156,8 @@ std::vector<double> Dataset::pop_back()
     return row_data;
 }
 //--------------------------------------------------------------------------------
-void Dataset::train_test_validation_split(Dataset& train, Dataset& test, double test_size,
-                                          Dataset& validation, double validation_size) const
+void Dataset::train_validation_test_split(Dataset& train, Dataset& validation, double validation_size,
+                                          Dataset& test, double test_size) const
 {
     if(rows_ == 0)
     {
@@ -176,10 +176,10 @@ void Dataset::train_test_validation_split(Dataset& train, Dataset& test, double 
 
     // Calculate each dataset length
     int train_length = random_set.rows() * (1-test_size-validation_size);
-    int test_length = random_set.rows() * (test_size);
     int validation_length = random_set.rows() * (validation_size);
+    int test_length = random_set.rows() * (test_size);
 
-    int remain = random_set.rows() - train_length - test_length - validation_length;
+    int remain = random_set.rows() - train_length - validation_length - test_length;
     train_length += remain;
 
     // Complete datasets
@@ -187,14 +187,15 @@ void Dataset::train_test_validation_split(Dataset& train, Dataset& test, double 
     {
         train.push_back(random_set.pop_back());
     }
-    for(int i=0; i<test_length; i++)
-    {
-        test.push_back(random_set.pop_back());
-    }
     for(int i=0; i<validation_length; i++)
     {
         validation.push_back(random_set.pop_back());
     }
+    for(int i=0; i<test_length; i++)
+    {
+        test.push_back(random_set.pop_back());
+    }
+
 }
 //--------------------------------------------------------------------------------
 

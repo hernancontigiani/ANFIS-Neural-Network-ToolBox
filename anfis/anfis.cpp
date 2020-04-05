@@ -124,7 +124,7 @@ void AnfisNeuralNetwork::compile(RuleLayer::RuleLayerFunctionType type)
     }
 }
 //--------------------------------------------------------------------------------
-void AnfisNeuralNetwork::fit(Dataset trainset, Dataset testset,
+void AnfisNeuralNetwork::fit(Dataset trainset, Dataset validationset,
                              double training_rate, long long int epochs, double max_error,
                              bool keep_best_candidate)
 {
@@ -142,29 +142,29 @@ void AnfisNeuralNetwork::fit(Dataset trainset, Dataset testset,
         {
             // The training data was its over, generate new from sorting
             // current traning data with test data. Generate new datasets
-            double test_size = testset.rows() / ((double)(trainset.rows()+testset.rows()));
+            double validation_size = validationset.rows() / ((double)(trainset.rows()+validationset.rows()));
             Dataset train_test;
             train_test.push_back(trainset);
-            train_test.push_back(testset);
-            Dataset validation;
-            train_test.train_test_validation_split(trainset,testset,test_size,validation,0);
+            train_test.push_back(validationset);
+            Dataset test;
+            train_test.train_validation_test_split(trainset,validationset,validation_size,test,0);
             train_index = 0;
         }
 
         // Train the system
         double train_error = train(trainset.row(train_index),training_rate);
         // Test the system
-        double test_error = test(testset);
-        if(train_error == std::numeric_limits<float>::infinity() || test_error == std::numeric_limits<float>::infinity())
+        double validation_error = test(validationset);
+        if(train_error == std::numeric_limits<float>::infinity() || validation_error == std::numeric_limits<float>::infinity())
         {
             // System diverge, finish process
             break;
         }
 
-        if(testset.rows() > 0)
+        if(validationset.rows() > 0)
         {
-            // If we are using a test set, the error is related to the test process
-            mean_squared_error_ = test_error;
+            // If we are using a validation set, the error is related to the validation process
+            mean_squared_error_ = validation_error;
         }
         else
         {
@@ -247,7 +247,7 @@ double AnfisNeuralNetwork::train(std::vector<double> dataset, double training_ra
 //--------------------------------------------------------------------------------
 double AnfisNeuralNetwork::test(Dataset testset)
 {
-    double validation_mean_squared_error = 0;
+    double test_mean_squared_error = 0;
 
     // For each test data, propagate and calculate error
     for(int i=0; i<testset.rows(); i++)
@@ -256,13 +256,13 @@ double AnfisNeuralNetwork::test(Dataset testset)
         std::vector<double> input(dataset.begin(), dataset.end()-1);
         double yd = dataset.at(dataset.size()-1);
         double y = predict(input);
-        validation_mean_squared_error += std::pow(yd- y,2);
+        test_mean_squared_error += std::pow(yd- y,2);
     }
-    validation_mean_squared_error /= testset.rows();
-    validation_mean_squared_error *= (1/2.0);
+    test_mean_squared_error /= testset.rows();
+    test_mean_squared_error *= (1/2.0);
 
     // mean squared error MSE = (1/2) * sum( (yd-y)^2 )
-    return validation_mean_squared_error;
+    return test_mean_squared_error;
 }
 //--------------------------------------------------------------------------------
 void AnfisNeuralNetwork::copy(const AnfisNeuralNetwork &anfis)

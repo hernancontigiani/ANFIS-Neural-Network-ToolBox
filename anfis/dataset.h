@@ -41,8 +41,8 @@ public:
     std::vector<double> pop_back();
 
     void random_shuffle();
-    void train_test_validation_split(Dataset& train, Dataset& test, double test_size,
-                                              Dataset& validation, double validation_size) const;
+    void train_validation_test_split(Dataset& train, Dataset& test, double validation_size,
+                                              Dataset& validation, double test_size) const;
 
 // Getters
 public:

@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     Dataset train, test, validation;
 
     // Split into train, test and validation datasets
-    input.train_test_validation_split(train,test,0.15,validation,0.05);
+    input.train_validation_test_split(train,validation,0.15,test,0.05);
 
     AnfisNeuralNetwork ann;
     InputLayer inp_a;
@@ -38,12 +38,12 @@ int main(int argc, char *argv[])
     ann.compile(RuleLayer::RULE_SUGENO_ONE);
 
     // Fit
-    ann.fit(train,test,0.01,1000,0);
+    ann.fit(train,validation,0.01,1000,0);
     qCritical()<<"Train error "<<ann.mean_squared_error();
 
     // Evaluate
-    double validation_error = ann.test(validation);
-    qCritical()<<"Validation Error "<<validation_error;
+    double validation_error = ann.test(test);
+    qCritical()<<"Test Error "<<validation_error;
 
     // Predict
     std::vector<double> predict_input;

@@ -26,7 +26,7 @@ public:
     void add(InputLayer input_layer);
     void add(RuleLayer *rule_layer);
     void compile(RuleLayer::RuleLayerFunctionType type);
-    void fit(Dataset trainset, Dataset testset, double training_rate, long long epochs,
+    void fit(Dataset trainset, Dataset validationset, double training_rate, long long epochs,
              double max_error, bool keep_best_candidate =true);
     double predict(std::vector<double> input);
     double test(Dataset testset);
