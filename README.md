@@ -5,7 +5,7 @@ This project was released in 2015, the goal was to develop a ANFIS Neural Networ
 
 In this repository you will find de ANFIS c++ class to implement in your project.
 
-Apart from that, you could use the out of the box ANFIS ToolBox to make some machine learning and play around.
+Next pictures are a GUI called ANFIS ToolBox builded in QTcrestor (not longer available) used to test and use the ANFIS c++ classes with a user interface. I suggeste from your side build something similar to better analyse de data and the results
 
 ![ANFIS ToolBox](/images/load_data.png)
 
